@@ -1,24 +1,14 @@
 package main
 
 import (
-	"kielio-gin-angular-app/backend/internal/routes"
-
-	"github.com/gin-gonic/gin"
-)
-
-func main() {
-	r := gin.Default()
-
-	routes.RegisterRoutes(r)
-
-	r.Run(":8080")
-}
-/*
-import (
 	"log"
 
 	"kielio-gin-angular-app/backend/internal/config"
 	"kielio-gin-angular-app/backend/internal/database"
+	"kielio-gin-angular-app/backend/internal/handlers"
+	"kielio-gin-angular-app/backend/internal/repositories"
+	"kielio-gin-angular-app/backend/internal/routes"
+	"kielio-gin-angular-app/backend/internal/services"
 
 	"github.com/gin-gonic/gin"
 )
@@ -35,8 +25,24 @@ func main() {
 
 	defer db.Close(nil)
 
+	repo := repositories.DeutschAdjektivRepository{
+		DB: db,
+	}
+
+	service := services.DeutschAdjektivService{
+		Repo: repo,
+	}
+
+	handler := handlers.DeutschAdjektivHandler{
+		Service: service,
+	}
+
 	r := gin.Default()
+
+	routes.RegisterRoutes(
+		r,
+		&handler,
+	)
 
 	r.Run(":8080")
 }
-*/
